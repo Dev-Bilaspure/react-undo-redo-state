@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "release": "npm publish"
   },
   "keywords": [
     "undo/redo state management",
