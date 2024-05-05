@@ -29,19 +29,24 @@ yarn add react-undo-redo-state
 import React from 'react';
 import { useUndoRedoState } from "react-undo-redo-state";
 
-const MyComponent = () => {
-  const [state, setState] = useUndoRedoState('initial value');
-
+export default function CounterApp() {
+  const [count, setCount] = useUndoRedoState(0);
   return (
-    <div>
-      <input
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      />
-      {/* Other component code */}
+    <div className="w-full h-screen mt-20">
+      <div className="flex flex-col gap-5 items-center">
+        <p className="text-2xl">{count}</p>
+        <div className="flex items-center gap-5">
+          <Button variant={"outline"} onClick={() => setCount(count - 1)}>
+            - Decrement
+          </Button>
+          <Button variant={"outline"} onClick={() => setCount(count + 1)}>
+            + Increment
+          </Button>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
 ```
 
