@@ -27,6 +27,7 @@
     "url": "https://github.com/dev-bilaspure/react-undo-redo/issues"
   },
   "devDependencies": {
+    "@types/react": "^18.3.1",
     "typescript": "^5.4.5"
   },
   "dependencies": {
