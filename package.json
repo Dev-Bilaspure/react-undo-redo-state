@@ -1,7 +1,7 @@
 {
   "name": "react-undo-redo-state",
-  "version": "1.5.0",
-  "description": "Hello react undo redo",
+  "version": "1.6.0",
+  "description": "Effortlessly enable undo and redo capabilities in your React applications with this powerful custom hook. 'useUndoRedoState' empowers users with intuitive keyboard shortcuts and programmatic control, allowing them to revert or reapply state changes seamlessly. Unlock a delightful user experience with a single line of code.",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
@@ -9,13 +9,25 @@
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [
+    "react",
+    "hooks",
     "undo/redo state management",
     "react undo/redo",
     "state management",
     "undo/redo",
-    "undo/ redo state",
+    "undo/redo state",
     "undo",
-    "redo"
+    "redo",
+    "history",
+    "time travel",
+    "state history",
+    "state navigation",
+    "state manipulation",
+    "state modification",
+    "state tracking",
+    "state versioning",
+    "keyboard shortcuts",
+    "productivity"
   ],
   "repository": {
     "type": "git",
