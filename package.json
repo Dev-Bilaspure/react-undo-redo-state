@@ -1,6 +1,6 @@
 {
   "name": "react-undo-redo-state",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Hello react undo redo",
   "main": "lib/index.js",
   "scripts": {
