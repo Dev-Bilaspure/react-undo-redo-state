@@ -65,7 +65,7 @@ The hook returns an array with two elements:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests on the [GitHub repository](https://github.com/dev-bilaspure/react-undo-redo).
+Contributions temporarily on hold.. 
 
 ## License
 
