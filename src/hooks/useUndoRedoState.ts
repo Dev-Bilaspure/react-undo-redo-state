@@ -3,12 +3,27 @@ const DEFULT_MAX_STACK_SIZE = 10;
 
 /**
  * A custom React hook that provides undo and redo functionality for state management.
- * @template T - The type of the state.
- * @param {T} initialState - The initial state value. (required)
- * @param {number} [maxStackSize=DEFULT_MAX_STACK_SIZE] - The maximum size of the undo and redo stacks. The default value is 10. (optional)
- * @returns {[T, (newValue: T) => void]} An array with the current state and a function to update the state.
+ *
+ * @template T - The type of the state value.
+ * @param {T} initialState - The initial state value.
+ * @param {Object} options - An object containing configuration options.
+ * @param {number} [options.maxStackSize=DEFULT_MAX_STACK_SIZE] - The maximum size of the undo and redo stacks.
+ * @param {Function} [options.onUndo] - A callback function to be called after an undo operation.
+ * @param {Function} [options.onRedo] - A callback function to be called after a redo operation.
+ * @returns {[T, (newValue: T) => void]} An array containing the current state value and a function to set a new state value.
  */
-const useUndoRedoState = <T>(initialState: T, maxStackSize: number = DEFULT_MAX_STACK_SIZE): [T, (newValue: T) => void] => {
+const useUndoRedoState = <T>(
+  initialState: T,
+  {
+    maxStackSize = DEFULT_MAX_STACK_SIZE,
+    onUndo = () => {},
+    onRedo = () => {},
+  }: {
+    maxStackSize?: number;
+    onUndo?: () => void;
+    onRedo?: () => void;
+  }
+): [T, (newValue: T) => void] => {
   const [state, setState] = useState<T>(initialState);
   const [undoStack, setUndoStack] = useState<T[]>([initialState]);
   const [redoStack, setRedoStack] = useState<T[]>([]);
@@ -25,6 +40,7 @@ const useUndoRedoState = <T>(initialState: T, maxStackSize: number = DEFULT_MAX_
         setState(newUndoStack[newUndoStack.length - 1]);
         setUndoStack(newUndoStack);
       }
+      onUndo();
     }
   }, [undoStack, redoStack, state]);
 
@@ -40,6 +56,7 @@ const useUndoRedoState = <T>(initialState: T, maxStackSize: number = DEFULT_MAX_
         setState(currentState);
         setRedoStack(newRedoStack);
       }
+      onRedo();
     }
   }, [undoStack, redoStack, state]);
 
