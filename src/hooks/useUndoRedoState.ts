@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect } from "react";
 const DEFULT_MAX_STACK_SIZE = 10;
 
 /**
@@ -14,11 +14,7 @@ const DEFULT_MAX_STACK_SIZE = 10;
  */
 const useUndoRedoState = <T>(
   initialState: T,
-  {
-    maxStackSize = DEFULT_MAX_STACK_SIZE,
-    onUndo = () => {},
-    onRedo = () => {},
-  }: {
+  options?: {
     maxStackSize?: number;
     onUndo?: () => void;
     onRedo?: () => void;
@@ -27,6 +23,11 @@ const useUndoRedoState = <T>(
   const [state, setState] = useState<T>(initialState);
   const [undoStack, setUndoStack] = useState<T[]>([initialState]);
   const [redoStack, setRedoStack] = useState<T[]>([]);
+  const {
+    maxStackSize = DEFULT_MAX_STACK_SIZE,
+    onUndo = () => {},
+    onRedo = () => {},
+  } = options || {};
 
   /**
    * Handles the undo operation by reverting the state to the previous value in the undo stack.
