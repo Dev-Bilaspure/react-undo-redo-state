@@ -65,7 +65,7 @@ The hook returns an array with two elements:
 
 ## Contributing
 
-Contributions temporarily on hold.. 
+Contributions are welcome! Please feel free to submit issues or pull requests on the [GitHub repository](https://github.com/Dev-Bilaspure/react-undo-redo-state)
 
 ## License
 
