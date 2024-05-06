@@ -65,7 +65,7 @@ The hook returns an array with two elements:
 
 ## Contributing
 
-Contributions temporarily on hold.. 
+Contributions temporarily on hold.
 
 ## License
 
