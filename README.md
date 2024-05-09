@@ -63,6 +63,10 @@ The hook returns an array with two elements:
 1. `state`: The current state value.
 2. `setState`: A function to set a new state value. This function automatically adds the previous state to the undo stack, enabling undo operations.
 
+## Demo
+
+[Demonstrating useUndoRedoState hook using a simple counter app](https://github.com/Dev-Bilaspure/useUndoRedoState-demo)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues or pull requests on the [GitHub repository](https://github.com/Dev-Bilaspure/react-undo-redo-state)
