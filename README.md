@@ -65,7 +65,7 @@ The hook returns an array with two elements:
 
 ## Demo
 
-Check out the useUndoRedoState hook demo [here](https://github.com/Dev-Bilaspure/useUndoRedoState-demo) featuring a simple counter app.
+Check out the useUndoRedoState hook demo [here](https://github.com/Dev-Bilaspure/useUndoRedoState-demo) featuring a simple Next.js counter app.
 
 ## Contributing
 
