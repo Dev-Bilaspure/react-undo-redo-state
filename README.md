@@ -65,7 +65,7 @@ The hook returns an array with two elements:
 
 ## Demo
 
-[Demonstrating useUndoRedoState hook using a simple counter app](https://github.com/Dev-Bilaspure/useUndoRedoState-demo)
+Check out the useUndoRedoState hook demo [here](https://github.com/Dev-Bilaspure/useUndoRedoState-demo) featuring a simple counter app.
 
 ## Contributing
 
