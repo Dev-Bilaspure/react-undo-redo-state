@@ -1,6 +1,6 @@
 {
   "name": "react-undo-redo-state",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "description": "Effortlessly enable undo and redo capabilities in your React applications with this powerful custom hook. 'useUndoRedoState' empowers users with intuitive keyboard shortcuts and programmatic control, allowing them to revert or reapply state changes seamlessly. Unlock a delightful user experience with a single line of code.",
   "main": "lib/index.js",
   "scripts": {
