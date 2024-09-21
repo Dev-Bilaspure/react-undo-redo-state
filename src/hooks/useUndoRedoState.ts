@@ -1,38 +1,48 @@
 import { useState, useCallback, useEffect } from "react";
-const DEFULT_MAX_STACK_SIZE = 10;
+
+const DEFAULT_MAX_STACK_SIZE = 10;
+
+type UndoRedoOptions = {
+  maxStackSize?: number;
+  onUndo?: () => void;
+  onRedo?: () => void;
+};
 
 /**
  * A custom React hook that provides undo and redo functionality for state management.
  *
  * @template T - The type of the state value.
  * @param {T} initialState - The initial state value.
- * @param {Object} options - An object containing configuration options.
- * @param {number} [options.maxStackSize=DEFULT_MAX_STACK_SIZE] - The maximum size of the undo and redo stacks.
- * @param {Function} [options.onUndo] - A callback function to be called after an undo operation.
- * @param {Function} [options.onRedo] - A callback function to be called after a redo operation.
- * @returns {[T, (newValue: T) => void]} An array containing the current state value and a function to set a new state value.
+ * @param {UndoRedoOptions} [options] - An object containing configuration options.
+ * @returns {[T, (newValue: T) => void, () => void, () => void, () => void, () => void]} An array containing:
+ * - The current state value.
+ * - A function to set a new state value.
+ * - A function to revert the state to the previous value.
+ * - A function to apply the next value from the redo stack.
+ * - A function to reset the state to the initial value.
+ * - A function to clear both the undo and redo stacks.
  */
 const useUndoRedoState = <T>(
   initialState: T,
-  options?: {
-    maxStackSize?: number;
-    onUndo?: () => void;
-    onRedo?: () => void;
-  }
-): [T, (newValue: T) => void] => {
+  options: UndoRedoOptions = {}
+): [
+  T,
+  (newValue: T) => void,
+  () => void,
+  () => void,
+  () => void,
+  () => void
+] => {
   const [state, setState] = useState<T>(initialState);
   const [undoStack, setUndoStack] = useState<T[]>([initialState]);
   const [redoStack, setRedoStack] = useState<T[]>([]);
   const {
-    maxStackSize = DEFULT_MAX_STACK_SIZE,
+    maxStackSize = DEFAULT_MAX_STACK_SIZE,
     onUndo = () => {},
     onRedo = () => {},
-  } = options || {};
+  } = options;
 
-  /**
-   * Handles the undo operation by reverting the state to the previous value in the undo stack.
-   */
-  const handleUndo = useCallback(() => {
+  const undo = useCallback(() => {
     if (undoStack.length > 1) {
       const newUndoStack = [...undoStack];
       const currentState = newUndoStack.pop();
@@ -43,51 +53,60 @@ const useUndoRedoState = <T>(
       }
       onUndo();
     }
-  }, [undoStack, redoStack, state]);
+  }, [undoStack, redoStack, state, onUndo]);
 
-  /**
-   * Handles the redo operation by applying the next value from the redo stack.
-   */
-  const handleRedo = useCallback(() => {
+  const redo = useCallback(() => {
     if (redoStack.length > 0) {
       const newRedoStack = [...redoStack];
       const currentState = newRedoStack.shift();
       if (currentState !== undefined) {
-        setUndoStack([...undoStack, state]);
+        setUndoStack(prevUndoStack => {
+          const newUndoStack = [...prevUndoStack, state];
+          if (newUndoStack.length > maxStackSize) {
+            newUndoStack.shift();
+          }
+          return newUndoStack;
+        });
         setState(currentState);
         setRedoStack(newRedoStack);
       }
       onRedo();
     }
-  }, [undoStack, redoStack, state]);
+  }, [redoStack, state, maxStackSize, onRedo]);
 
-  /**
-   * Updates the state with a new value and adds the previous state to the undo stack.
-   * @param {T} newValue - The new state value.
-   */
   const setValue = useCallback(
     (newValue: T) => {
-      const newUndoStack = [...undoStack, state];
-      if (newUndoStack.length > maxStackSize) {
-        newUndoStack.shift();
-      }
+      setUndoStack(prevUndoStack => {
+        const newUndoStack = [...prevUndoStack, state];
+        if (newUndoStack.length > maxStackSize) {
+          newUndoStack.shift();
+        }
+        return newUndoStack;
+      });
       setState(newValue);
-      setUndoStack(newUndoStack);
       setRedoStack([]);
     },
-    [undoStack, state, maxStackSize]
+    [state, maxStackSize]
   );
 
-  /**
-   * Sets up event listeners for keyboard shortcuts (Cmd+Z for undo, Cmd+Shift+Z for redo).
-   */
+  const resetState = useCallback(() => {
+    setState(initialState);
+    setUndoStack([initialState]);
+    setRedoStack([]);
+  }, [initialState]);
+
+  const clearHistory = useCallback(() => {
+    setUndoStack([state]);
+    setRedoStack([]);
+  }, [state]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.metaKey) {
+      if (event.metaKey || event.ctrlKey) {
         if (event.key === "z" && !event.shiftKey) {
-          handleUndo();
+          undo();
         } else if (event.key === "z" && event.shiftKey) {
-          handleRedo();
+          redo();
         }
       }
     };
@@ -96,9 +115,35 @@ const useUndoRedoState = <T>(
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleUndo, handleRedo]);
+  }, [undo, redo]);
 
-  return [state, setValue] as const;
+  return [
+    /**
+     * The current state value.
+     */
+    state,
+    /**
+     * Updates the state with a new value and adds the previous state to the undo stack.
+     * @param {T} newValue - The new state value.
+     */
+    setValue,
+    /**
+     * Reverts the state to the previous value in the undo stack.
+     */
+    undo,
+    /**
+     * Applies the next value from the redo stack to the state.
+     */
+    redo,
+    /**
+     * Resets the state to the initial state value.
+     */
+    resetState,
+    /**
+     * Clears both the undo and redo stacks.
+     */
+    clearHistory,
+  ];
 };
 
 export default useUndoRedoState;
