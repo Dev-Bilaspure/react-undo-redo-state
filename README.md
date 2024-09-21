@@ -86,7 +86,7 @@ Contributions are welcome! Please feel free to submit issues or pull requests on
 
 This project is licensed under the MIT License.
 
-### Summary of Changes:
+## Summary of Changes (v1.10.6):
 1. **Updated Features Section:** Added details for the new `resetState` and `clearHistory` functions.
 2. **Usage Example:** Updated the usage example to show the use of the new functions and the renamed `setValue` function.
 3. **Return Object Documentation:** Updated the documentation to reflect returning an object instead of a tuple.
